@@ -119,12 +119,9 @@ func sendGiftsToPlayers(config *Config, codes []Codes, playerIds []string) error
 
 			defer resp.Body.Close()
 
-			if resp.StatusCode == 200 {
-				log.Printf("Redeemed %s for player %s", code.Code, playerId)
-			} else {
-				log.Printf("Failed to redeem code %s for player %s", code.Code, playerId)
-			}
+			LogMessage(resp, playerId, code.Code)
 
+			time.Sleep(time.Duration(config.RequestInterval) * time.Second) // to stop bombarding with requests
 		}
 	}
 
@@ -173,4 +170,35 @@ func NewRedeemRequest(playerId string, giftCode string, kingdomId string) *Redee
 		KingdomId: kingdomId,
 		Time:      time.Now().Unix(),
 	}
+}
+
+func LogMessage(resp *http.Response, playerId string, giftCode string) (err error) {
+	body, err := io.ReadAll(resp.Body)
+
+	response := RedeemResponse{}
+	json.Unmarshal(body, &response)
+
+	msg := ConstructLogMessage(response.Message, resp.StatusCode, playerId, giftCode)
+
+	log.Println(msg)
+
+	return
+}
+
+func ConstructLogMessage(message string, statusCode int, playerId string, giftCode string) string {
+	if statusCode == 200 {
+		if message == "RECEIVED." {
+			return fmt.Sprintf("Giftcode already claimed %s %s", giftCode, playerId)
+		}
+		if message == "SAME TYPE EXCHANGE" {
+			return fmt.Sprintf("Same giftcode type can only be redeemed once %s %s", giftCode, playerId)
+		}
+		if message == "SUCCESS" {
+			return fmt.Sprintf("Redeemed successfully %s %s", giftCode, playerId)
+		}
+
+		return fmt.Sprintf("Unexpected message %s", message)
+	}
+
+	return fmt.Sprintf("Non 200 status from request %s %s", giftCode, playerId)
 }

@@ -17,7 +17,8 @@ type Config struct {
 	RedeemUrl         string `json:"giftcode_redeem_api_url"`
 	PlayerIdsUrl      string `json:"player_ids_csv"`
 	EncryptKey        string `json:"sign"`
-	KingdomId         string `json:kingdom`
+	KingdomId         string `json:"kingdom"`
+	RequestInterval   int    `json:"request_interval"`
 }
 
 type RedeemRequest struct {
@@ -26,4 +27,8 @@ type RedeemRequest struct {
 	GiftCode  string `json:"cdk"`
 	KingdomId string `json:"kid"`
 	Time      int64  `json:"time"`
+}
+
+type RedeemResponse struct {
+	Message string `json:"msg"`
 }

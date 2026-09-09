@@ -3,5 +3,6 @@
     "giftcode_redeem_api_url": "https://kingshot-giftcode.centurygame.com/api/gift_code",
     "player_ids_csv": "https://gist.githubusercontent.com/KirillVassiljev/1483a96d4273479390ddf6738957f3c6/raw/ids.csv",
     "sign": "mN4!pQs6JrYwV9",
-    "kingdom": "1997"
+    "kingdom": "1997",
+    "request_interval": 3
 }
