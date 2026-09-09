@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"net/url"
 	"sort"
@@ -37,7 +38,7 @@ func main() {
 		panic(err)
 	}
 
-	sendGiftsToPlayers(cfg, giftCodes, playerIds)
+	sendGiftsToPlayers(cfg, giftCodes.Codes, playerIds)
 
 }
 
@@ -101,9 +102,9 @@ func getPlayerIds(c *Config) (result []string, err error) {
 	return
 }
 
-func sendGiftsToPlayers(config *Config, codes *GiftCodes, playerIds []string) error {
+func sendGiftsToPlayers(config *Config, codes []Codes, playerIds []string) error {
 	for _, playerId := range playerIds {
-		for _, code := range codes.Codes {
+		for _, code := range codes {
 
 			req := NewRedeemRequest(playerId, code.Code, config.KingdomId)
 			req.signWithMd5(config.EncryptKey)
@@ -117,6 +118,13 @@ func sendGiftsToPlayers(config *Config, codes *GiftCodes, playerIds []string) er
 			}
 
 			defer resp.Body.Close()
+
+			if resp.StatusCode == 200 {
+				log.Printf("Redeemed %s for player %s", code.Code, playerId)
+			} else {
+				log.Printf("Failed to redeem code %s for player %s", code.Code, playerId)
+			}
+
 		}
 	}
 

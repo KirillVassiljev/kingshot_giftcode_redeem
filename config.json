@@ -1,7 +1,7 @@
 {
     "giftcode_source_json": "https://gist.githubusercontent.com/zebrave-dev/ab58e031f9bfaf01723a62648741e2b0/raw/codes_ks.json",
     "giftcode_redeem_api_url": "https://kingshot-giftcode.centurygame.com/api/gift_code",
-    "player_ids_csv": "https://gist.githubusercontent.com/KirillVassiljev/1483a96d4273479390ddf6738957f3c6/raw/9774b641f5dc0a5c5e13e655f3a66d0a08e5b4fe/ids.csv",
+    "player_ids_csv": "https://gist.githubusercontent.com/KirillVassiljev/1483a96d4273479390ddf6738957f3c6/raw/ids.csv",
     "sign": "mN4!pQs6JrYwV9",
     "kingdom": "1997"
 }
